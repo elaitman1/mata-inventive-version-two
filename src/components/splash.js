@@ -25,14 +25,14 @@ export default class Splash extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-
     // some error handling to check for empty username/password (username including just whitespace)
     if (this.state.Username.trim() === "") {
       this.setState({ loginErrors: "Username can't be blank." });
     } else if (this.state.Password === "") {
       this.setState({ loginErrors: "Password can't be blank." });
     } else {
-      this.props.logIn();
+      debugger
+      this.props.logIn(this.state.Username, this.state.Password);
     }
   };
 

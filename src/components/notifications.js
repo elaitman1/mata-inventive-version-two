@@ -15,6 +15,7 @@ export default class Notifications extends Component {
   }
 
   render = () => {
+    // sends props to toggle input/////////////////////////////////////////////////////////////////toggle input sends in toggleNotification function from another component// see what the parent of notifications is//profileItem
     return (
       <div className="notifications-container">
         {Object.keys(this.props.user.notifications).map((notif, idx) => {
@@ -73,6 +74,7 @@ const ToggleInput = props => {
   const sliderClassName = props.toggled
     ? "toggle-input-slider toggled"
     : "toggle-input-slider";
+    //this receives props from parent//////////////////////////////////////////////////////////
   const circleClassName = props.toggled
     ? "toggle-input-circle toggled"
     : "toggle-input-circle";
@@ -86,6 +88,7 @@ const ToggleInput = props => {
           className={sliderClassName}
           onClick={props.toggleNotification(toggleArg)}
         >
+        //above is where the argument is triggered to either scheduled or do not disturb 
           <span className={circleClassName} />
         </div>
       </div>

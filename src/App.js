@@ -10,6 +10,7 @@ export default class App extends Component {
   state = {
     user: {
       name: "Awesome Machinist",
+      id:'',
       notifications: {
         Text: true,
         Email: false,
@@ -194,8 +195,11 @@ export default class App extends Component {
     return res.json();
   };
 
-  logIn = () => {
-    this.setState({ loggedIn: true });
+  logIn = async(Username, Password) => {
+    debugger
+    await fetch(`https://www.matainventive.com/wp-json/custom-plugin/login?username=${Username}&password=${Password}`)
+    .then(r=> r.json())
+    .then(r=> this.setState({ loggedIn: true, id:r.ID }))
   };
 
   // toggles between Overview and Floorplan views within Feed component based on toggled value from Footer component (currently removed)
@@ -283,6 +287,18 @@ export default class App extends Component {
   };
 
   toggleNotification = type => {
+    //below we are toggling the users attribute of specific categories being in do not disturb mode or not.
+    // fetch(`https://www.matainventive.com/cordovaserver/database/jsonmatastatusconfig.php?id=${clickedId}`,
+    //   {
+    //     method: 'PATCH',
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "Accept": "application/json"
+    //     },
+    //     body: JSON.stringify({
+    //       [clickedKey]: clickedValue
+    //     })
+    // })
     return () => {
       let newUser = this.state.user;
       if (type === "Do Not Disturb") {
