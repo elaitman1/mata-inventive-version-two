@@ -288,17 +288,17 @@ export default class App extends Component {
 
   toggleNotification = type => {
     //below we are toggling the users attribute of specific categories being in do not disturb mode or not.
-    // fetch(`https://www.matainventive.com/cordovaserver/database/jsonmatastatusconfig.php?id=${clickedId}`,
-    //   {
-    //     method: 'PATCH',
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "Accept": "application/json"
-    //     },
-    //     body: JSON.stringify({
-    //       [clickedKey]: clickedValue
-    //     })
-    // })
+    fetch(`https://www.matainventive.com/cordovaserver/database/jsonmatastatusconfig.php?id=${this.state.ID}`,
+      {
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          [this.state.user.notifications[type]]: clickedValue
+        })
+    })
     return () => {
       let newUser = this.state.user;
       if (type === "Do Not Disturb") {
