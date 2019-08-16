@@ -66,7 +66,7 @@ export default class Notifications extends Component {
 }
 
 const ToggleInput = props => {
-  // various class name and other values change based on App component's current state value for notification and other related pointers
+
   const inputName =
     props.notification === "Scheduled"
       ? "Scheduled"
@@ -74,7 +74,7 @@ const ToggleInput = props => {
   const sliderClassName = props.toggled
     ? "toggle-input-slider toggled"
     : "toggle-input-slider";
-    //this receives props from parent//////////////////////////////////////////////////////////
+
   const circleClassName = props.toggled
     ? "toggle-input-circle toggled"
     : "toggle-input-circle";
@@ -88,7 +88,6 @@ const ToggleInput = props => {
           className={sliderClassName}
           onClick={props.toggleNotification(toggleArg)}
         >
-        //above is where the argument is triggered to either scheduled or do not disturb 
           <span className={circleClassName} />
         </div>
       </div>

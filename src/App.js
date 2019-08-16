@@ -196,10 +196,37 @@ export default class App extends Component {
   };
 
   logIn = async(Username, Password) => {
-    debugger
+
     await fetch(`https://www.matainventive.com/wp-json/custom-plugin/login?username=${Username}&password=${Password}`)
     .then(r=> r.json())
-    .then(r=> this.setState({ loggedIn: true, id:r.ID }))
+    .then(r=> {
+      let id = this.state.user.id
+      this.setState(prevState => ({
+        loggedIn: true,
+        id: r.ID
+      }))
+    })
+
+    await fetch(`https://www.matainventive.com/cordovaserver/database/jsonmatastatusconfig.php?id=${this.state.user.id}`)
+    .then(r=> r.json())
+    .then(r=> {
+
+      let emailNotif = this.state.user.notifications.Email
+
+      if(r.alertenableemail === "1"){
+        this.setState({ emailNotif: true })
+      }else{
+        this.setState({ emailNotif: false })
+      }
+
+    let textNotif = this.state.user.notifications.Text
+
+     if(r.alertenablephone === "1"){
+        this.setState({ textNotif: true })
+      }else{
+        this.setState({ textNotif: false })
+      }
+    })
   };
 
   // toggles between Overview and Floorplan views within Feed component based on toggled value from Footer component (currently removed)
@@ -287,18 +314,59 @@ export default class App extends Component {
   };
 
   toggleNotification = type => {
-    //below we are toggling the users attribute of specific categories being in do not disturb mode or not.
-    fetch(`https://www.matainventive.com/cordovaserver/database/jsonmatastatusconfig.php?id=${this.state.ID}`,
-      {
-        method: 'PATCH',
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
+    let userid = this.state.user.id
+    let emailstate
+    let textstate
+    let alertemail = this.state.user.notifications.Email
+    let alerttext = this.state.user.notifications.Text
+
+    if (this.state.user.notifications.Email === true){
+     emailstate = 1
+    }else{
+      emailstate = 0
+    }
+
+    if (this.state.user.notifications.Text === true){
+       textstate = 1
+    }else{
+       textstate = 0
+    }
+    
+     fetch('https://www.matainventive.com/cordovaserver/database/togglealertconfig.php',
+    {
+      method: 'POST',
+      headers:
+        {
+          'Accept': 'application/json',
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+          "Sec-Fetch-Mode": "cors",
         },
-        body: JSON.stringify({
-          [this.state.user.notifications[type]]: clickedValue
-        })
+      body: "userid="+userid+"&emailstate="+emailstate+"&textstate="+textstate+"&insert=",
     })
+
+    //below we are toggling the users attribute of specific categories being in do not disturb mode or not.
+    	// var dataString="userid="+title+"&emailstate="+emailstate+"&textstate="+textstate+"&insert=";
+    	// // $("#alertwarning").text("");
+    	// if($.trim(title).length>0)
+    	// {
+    	// 	$.ajax({
+    	// 		type: "POST",
+    	// 		url:"https://www.matainventive.com/cordovaserver/database/togglealertconfig.php",
+    	// 		data: dataString,
+    	// 		crossDomain: true,
+    	// 		cache: false,
+    	// 		beforeSend: function(){ $("#insertalert").val('Connecting...');},
+    	// 		success: function(data){
+    	// 		if(data=="success")
+    	// 			{
+    	// 			}
+    	// 		else if(data=="error")
+    	// 			{
+    	// 			}
+    	// 		}
+    	// 	});
+    	// }
+
     return () => {
       let newUser = this.state.user;
       if (type === "Do Not Disturb") {
