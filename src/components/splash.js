@@ -31,7 +31,7 @@ export default class Splash extends Component {
     } else if (this.state.Password === "") {
       this.setState({ loginErrors: "Password can't be blank." });
     } else {
-      
+
       this.props.logIn(this.state.Username, this.state.Password);
     }
   };

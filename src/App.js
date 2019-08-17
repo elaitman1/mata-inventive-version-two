@@ -196,7 +196,7 @@ export default class App extends Component {
   };
 
   logIn = async(Username, Password) => {
-
+  debugger
     await fetch(`https://www.matainventive.com/wp-json/custom-plugin/login?username=${Username}&password=${Password}`)
     .then(r=> r.json())
     .then(r=> {
@@ -331,7 +331,7 @@ export default class App extends Component {
     }else{
        textstate = 0
     }
-    
+    debugger
      fetch('https://www.matainventive.com/cordovaserver/database/togglealertconfig.php',
     {
       method: 'POST',
@@ -342,6 +342,9 @@ export default class App extends Component {
           "Sec-Fetch-Mode": "cors",
         },
       body: "userid="+userid+"&emailstate="+emailstate+"&textstate="+textstate+"&insert=",
+    })
+    .then(r=>{
+      debugger
     })
 
     //below we are toggling the users attribute of specific categories being in do not disturb mode or not.
